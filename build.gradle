@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'com.galago.sprite'
+version '1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+project.ext {
+    jmeVer = '3.3.0-stable'
+    dyn4jVer = '3.3.0'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    implementation "org.jmonkeyengine:jme3-core:$jmeVer"
+    implementation "org.jmonkeyengine:jme3-desktop:$jmeVer"
+    implementation "org.dyn4j:dyn4j:$dyn4jVer"
+}
