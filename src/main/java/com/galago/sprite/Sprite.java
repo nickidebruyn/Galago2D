@@ -29,6 +29,10 @@ public class Sprite extends Mesh {
     public Sprite() {
     }
 
+    public Sprite(float width, float height) {
+        this(width, height, 1, 1, 0, 0);
+    }
+
     public Sprite(float width, float height, int columns, int rows, int colPosition, int rowPosition) {
 
         this.width = width;

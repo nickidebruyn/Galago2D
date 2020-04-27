@@ -15,7 +15,7 @@ import com.jme3.scene.Spatial;
  *
  * @author NideBruyn
  */
-public class PlatformerCameraState extends BaseAppState {
+public class Camera2DState extends BaseAppState {
 
   private Spatial target;
   private float followInterpolationAmount = 0.2f;
@@ -27,7 +27,7 @@ public class PlatformerCameraState extends BaseAppState {
   private Vector3f targetPosition = new Vector3f(0, 0, 0);
   private Camera camera;
 
-  public PlatformerCameraState(Spatial target, float cameraDistanceFrustum, float followInterpolationAmount) {
+  public Camera2DState(Spatial target, float cameraDistanceFrustum, float followInterpolationAmount) {
     this.target = target;
     this.cameraDistanceFrustum = cameraDistanceFrustum;
     this.followInterpolationAmount = followInterpolationAmount;
