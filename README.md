@@ -103,7 +103,9 @@ public class Example1 extends SimpleApplication {
 }
 
 ```
+It will look something like this.
 
+![Image Example 1 screenshot](extra/screenshot1.png)
 
 ## Example2:
 We will now look at how one can add these sprite spatial's to a 2D physics space.
