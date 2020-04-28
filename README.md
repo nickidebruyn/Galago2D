@@ -170,7 +170,7 @@ The Camera2DState class will disable the fly cam, set the camera in orthographic
 and lock movement of the camera to the target spatial.
 
 ```java
-//Example4-Step1: Create the camera2Dstate and give it a distance and movement interpolation amount
+        //Example4-Step1: Create the camera2Dstate and give it a distance and movement interpolation amount
         camera2DState = new Camera2DState(player, 6, 0.01f);
         //Set camera clipping which will block the camera from moving a certain min and max value on the x and y axis
         camera2DState.setCameraClipping(new Vector2f(-2f, 0), new Vector2f(2f, 1));
@@ -180,3 +180,41 @@ and lock movement of the camera to the target spatial.
         stateManager.attach(camera2DState);
 ```
 
+## Example5: 
+In example 5 we will look at how we can add animated sprites to the scene and setup specific animations.
+This is done by the SpriteAnimationControl which can be added to the flag spatial.
+The basic idea of this control is to setup a sequence of indexes per animation which will be looped over at runtime and rendered accordingly.
+
+If you look at the image below you can see how many columns and rows exist in the used texture. Also each tile contains an index.
+This index is very important because that is the index which will be used when doing an animation.
+
+![Image Example 3 screenshot](extra/screenshot3.png)
+
+We will add the orange flag to the scene and animated it.
+Here is the code for doing that.
+
+```java
+        //Example5: Add an animated character to the scene
+        Sprite flagSprite = new Sprite(1, 1, 8, 4, 0, 1);
+        Geometry flag = new Geometry("flag", flagSprite);
+        Material flagMat = loadMaterial("Textures/spritesheet_items.png");
+        //Important to note, the face culling for animated sprites need to be off
+        flagMat.getAdditionalRenderState().setFaceCullMode(RenderState.FaceCullMode.Off);
+        flag.setMaterial(flagMat);
+        flag.setQueueBucket(RenderQueue.Bucket.Transparent);
+        flag.move(3, -3, 0);
+        rootNode.attachChild(flag);
+        
+        //Here we instanciate the animation control
+        SpriteAnimationControl spriteAnimationControl = new SpriteAnimationControl(flagSprite);
+        //Setup a simple animation making use of a sequence of tile indexes
+        spriteAnimationControl.addAnimation("idle", new int[] {8, 16});
+        flag.addControl(spriteAnimationControl);
+        
+        //Finally we need to play the desired animation
+        spriteAnimationControl.playAnimation("idle", 0.15f);
+```
+
+And that is it. The final game will look like this.
+
+![Image Example 3 screenshot](extra/screenshot4.png)
