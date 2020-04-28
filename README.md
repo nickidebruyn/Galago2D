@@ -104,3 +104,40 @@ public class Example1 extends SimpleApplication {
 
 ```
 
+
+## Example2:
+We will now look at how one can add these sprite spatial's to a 2D physics space.
+
+### Step1: Setting up the physics space
+First we need to create a Dyn4jAppState and attach it to the state manager.
+```java
+        dyn4jAppState = new Dyn4jAppState();
+        stateManager.attach(dyn4jAppState);
+```
+
+### Step2: Adding physics to static floor
+Next we will create a RigidBodyControl2D with 0 mass and add it to the physics space.
+```java
+        //For the floor sprite it will be a static body with 0 mass
+        RigidBodyControl2D rbcFloor = new RigidBodyControl2D(new BoxCollisionShape(floorSprite.getWidth(), floorSprite.getHeight()), 0);
+        //Attach the control to the spatial
+        floor.addControl(rbcFloor);
+        //Add the rigid body to the physics space        
+        dyn4jAppState.getPhysicsSpace().add(rbcFloor);
+        //Move the rigid body to the desired position
+        rbcFloor.move(0, -4f);        
+```
+
+
+### Step3: Add physic to the player sprite
+Then finally in example2 we will create a rigidbody with mass and add it to the physics space.
+```java
+        //The player rigid body will have mass so that it can be affected by gravity
+        RigidBodyControl2D rbcPlayer = new RigidBodyControl2D(new CircleCollisionShape(0.5f), 1);
+        //Add the control to the player spatial
+        player.addControl(rbcPlayer);
+        //Add it to the physics space
+        dyn4jAppState.getPhysicsSpace().add(rbcPlayer);
+        //Now we can move it to a start position
+        rbcPlayer.move(0, 1);
+```

@@ -141,4 +141,28 @@ public class Sprite extends Mesh {
     public void showIndex(int colPosition, int rowPosition) {
         updateTextureCoords(colPosition, rowPosition);
     }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public int getColPosition() {
+        return colPosition;
+    }
+
+    public int getRowPosition() {
+        return rowPosition;
+    }
 }
