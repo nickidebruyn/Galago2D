@@ -129,7 +129,7 @@ Next we will create a RigidBodyControl2D with 0 mass and add it to the physics s
 ```
 
 
-### Step3: Add physic to the player sprite
+### Step3: Add physics to the player sprite
 Then finally in example2 we will create a rigidbody with mass and add it to the physics space.
 ```java
         //The player rigid body will have mass so that it can be affected by gravity
