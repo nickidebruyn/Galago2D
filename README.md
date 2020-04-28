@@ -163,8 +163,7 @@ In the next example you will see how to fix this problem.
 
 ![Image Example 3 screenshot](extra/screenshot2.png)
 
-##Example4:
-
+## Example4: 
 In example 4 we will look at fixing the camera to be in 2D space.
 Fortunately it is also very easy to do and Galago2D provides you with such a class.
 The Camera2DState class will disable the fly cam, set the camera in orthographical view 
