@@ -142,4 +142,42 @@ Then finally in example2 we will create a rigidbody with mass and add it to the 
         dyn4jAppState.getPhysicsSpace().add(rbcPlayer);
         //Now we can move it to a start position
         rbcPlayer.move(0, 1);
+        //Adjust the player's gravity
+        rbcPlayer.setGravityScale(2);
 ```
+
+## Example3:
+This example will show you how to add platformer character control app state to the game.
+For convenience Galago2D comes with a very handy and out of the box 2D character control app state.
+It gives the user the ability to control the characters movement and gives it a left, right, jump, attack and interact behaviour.
+And it is very simple to use. The next piece of code is all you need to get this behaviour.
+
+```java
+        //Example3-Step1
+        platformerCharacterControlState = new PlatformerCharacterControlState(dyn4jAppState, player);
+        stateManager.attach(platformerCharacterControlState);
+```
+You will notice that when you control the character the camera also moves along and that is 
+because the default fly camera is still active which is part of the SimpleApplication you extended.
+In the next example you will see how to fix this problem.
+
+![Image Example 3 screenshot](extra/screenshot2.png)
+
+
+##Example4:
+In example 4 we will look at fixing the camera to be in 2D space.
+Fortunately it is also very easy to do and Galago2D provides you with such a class.
+The Camera2DState class will disable the fly cam, set the camera in orthographical view 
+and lock movement of the camera to the target spatial.
+
+```java
+//Example4-Step1: Create the camera2Dstate and give it a distance and movement interpolation amount
+        camera2DState = new Camera2DState(player, 6, 0.01f);
+        //Set camera clipping which will block the camera from moving a certain min and max value on the x and y axis
+        camera2DState.setCameraClipping(new Vector2f(-2f, 0), new Vector2f(2f, 1));
+        //You can also set a camera to player offset. Move the camera to stick above the player 2f in the y axis
+        camera2DState.setTargetOffset(new Vector2f(0, 2));
+        //Attach the camera2Dstate to the state manager
+        stateManager.attach(camera2DState);
+```
+

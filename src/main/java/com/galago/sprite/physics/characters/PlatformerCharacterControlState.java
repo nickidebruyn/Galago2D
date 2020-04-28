@@ -210,11 +210,13 @@ public class PlatformerCharacterControlState extends BaseAppState implements Act
 
     }
 
-    if (movementDirection.x == 0) {
-      spatial.getControl(SpriteAnimationControl.class).playAnimation("idle", 0.2f);
-    } else {
-      spatial.getControl(SpriteAnimationControl.class).playAnimation("walk", 0.1f);
+    if (spatial.getControl(SpriteAnimationControl.class) != null) {
+      if (movementDirection.x == 0) {
+        spatial.getControl(SpriteAnimationControl.class).playAnimation("idle", 0.2f);
+      } else {
+        spatial.getControl(SpriteAnimationControl.class).playAnimation("walk", 0.1f);
 
+      }
     }
 
     if (movementDirection.x < 0) {
