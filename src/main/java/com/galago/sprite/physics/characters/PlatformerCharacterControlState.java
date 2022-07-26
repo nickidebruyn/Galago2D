@@ -1,7 +1,6 @@
 package com.galago.sprite.physics.characters;
 
 import com.galago.sprite.Sprite;
-import com.galago.sprite.SpriteAnimationControl;
 import com.galago.sprite.physics.*;
 import com.galago.sprite.physics.shape.CollisionShape;
 import com.jme3.app.Application;
@@ -46,10 +45,16 @@ public class PlatformerCharacterControlState extends BaseAppState implements Act
   private boolean onGround;
   private int jumpCount = 0;
   private float jumpForce = 10;
+  private PlatformerCharacterListener platformerCharacterListener;
 
   public PlatformerCharacterControlState(Dyn4jAppState dyn4jAppState, Spatial spatial) {
+    this(dyn4jAppState, spatial, null);
+  }
+
+  public PlatformerCharacterControlState(Dyn4jAppState dyn4jAppState, Spatial spatial, Sprite sprite) {
     this.dyn4jAppState = dyn4jAppState;
     this.spatial = spatial;
+    this.sprite = sprite;
   }
 
   @Override
@@ -84,7 +89,9 @@ public class PlatformerCharacterControlState extends BaseAppState implements Act
 
     }
 
-    sprite = (Sprite) ((Geometry) spatial).getMesh();
+    if (sprite == null) {
+      sprite = (Sprite) ((Geometry) spatial).getMesh();
+    }
 
     registerWithInput(inputManager);
 
@@ -144,6 +151,28 @@ public class PlatformerCharacterControlState extends BaseAppState implements Act
 
   }
 
+  public void setPlatformerCharacterListener(PlatformerCharacterListener platformerCharacterListener) {
+    this.platformerCharacterListener = platformerCharacterListener;
+  }
+
+  protected void fireIdleEvent() {
+    if (this.platformerCharacterListener != null) {
+      this.platformerCharacterListener.doCharacterIdleEvent();
+    }
+  }
+
+  protected void fireWalkEvent(float dir) {
+    if (this.platformerCharacterListener != null) {
+      this.platformerCharacterListener.doCharacterWalkEvent(dir);
+    }
+  }
+
+  protected void fireJumpEvent(int count) {
+    if (this.platformerCharacterListener != null) {
+      this.platformerCharacterListener.doCharacterJumpEvent(count);
+    }
+  }
+
   @Override
   public void onAction(String name, boolean isPressed, float tpf) {
 
@@ -152,6 +181,7 @@ public class PlatformerCharacterControlState extends BaseAppState implements Act
       if (!jump && (onGround || jumpCount < 2)) {
         jump = true;
         onGround = false;
+        fireJumpEvent(jumpCount);
         jumpCount++;
 
       }
@@ -185,7 +215,7 @@ public class PlatformerCharacterControlState extends BaseAppState implements Act
       if (!jump && (onGround || jumpCount < 2)) {
         jump = true;
         onGround = false;
-
+        fireJumpEvent(jumpCount);
 
       }
 
@@ -210,13 +240,12 @@ public class PlatformerCharacterControlState extends BaseAppState implements Act
 
     }
 
-    if (spatial.getControl(SpriteAnimationControl.class) != null) {
-      if (movementDirection.x == 0) {
-        spatial.getControl(SpriteAnimationControl.class).playAnimation("idle", 0.2f);
-      } else {
-        spatial.getControl(SpriteAnimationControl.class).playAnimation("walk", 0.1f);
+    if (movementDirection.x == 0) {
+      fireIdleEvent();
 
-      }
+    } else {
+      fireWalkEvent(movementDirection.x);
+
     }
 
     if (movementDirection.x < 0) {
@@ -226,7 +255,7 @@ public class PlatformerCharacterControlState extends BaseAppState implements Act
       sprite.flipCoords(false);
 
     } else {
-      sprite.flipCoords(false);
+//      sprite.flipCoords(false);
 
     }
 
