@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.galago.sprite'
-version '1.3.1'
+version '2.0.0'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -13,8 +13,8 @@ repositories {
 }
 
 project.ext {
-    jmeVer = '3.5.0-stable'
-    dyn4jVer = '3.3.0'
+    jmeVer = '3.6.1-stable'
+    dyn4jVer = '5.0.1'
 }
 
 dependencies {
@@ -22,6 +22,7 @@ dependencies {
 
     implementation "org.jmonkeyengine:jme3-core:$jmeVer"
     implementation "org.jmonkeyengine:jme3-desktop:$jmeVer"
+    implementation "org.jmonkeyengine:jme3-plugins:$jmeVer"
     implementation "org.dyn4j:dyn4j:$dyn4jVer"
 
     // choose lwjgl 2 or 3

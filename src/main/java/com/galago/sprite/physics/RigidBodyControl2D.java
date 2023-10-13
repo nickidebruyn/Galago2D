@@ -55,16 +55,16 @@ public class RigidBodyControl2D extends AbstractControl implements PhysicsContro
 
     if (mass != 0) {
       body.setMass(MassType.NORMAL);
-      body.setAutoSleepingEnabled(false);
+      body.setAtRestDetectionEnabled(false);
 
     } else {
-      body.setAutoSleepingEnabled(true);
+      body.setAtRestDetectionEnabled(true);
     }
 
   }
 
   public void setAutoSleepingEnabled(boolean enabled) {
-    this.body.setAutoSleepingEnabled(enabled);
+    this.body.setAtRestDetectionEnabled(enabled);
   }
 
   /**
@@ -157,7 +157,7 @@ public class RigidBodyControl2D extends AbstractControl implements PhysicsContro
   public void setPhysicsRotation(final Body physicBody) {
     final Transform transform = physicBody.getTransform();
 
-    final float rotation = Converter.toFloat(transform.getRotation());
+    final float rotation = Converter.toFloat(transform.getRotationAngle());
 
     final TempVars tempVars = TempVars.get();
     final Quaternion quaternion = tempVars.quat1;
@@ -220,7 +220,7 @@ public class RigidBodyControl2D extends AbstractControl implements PhysicsContro
 
   public float getPhysicsRotation() {
 //        clearForces();
-    return (float) this.body.getTransform().getRotation();
+    return (float) this.body.getTransform().getRotationAngle();
   }
 
   public void rotate(float radians) {
@@ -294,19 +294,19 @@ public class RigidBodyControl2D extends AbstractControl implements PhysicsContro
   }
 
   public void setActive(boolean active) {
-    this.body.setActive(active);
+    this.body.setEnabled(active);
   }
 
   public boolean isActive() {
-    return this.body.isActive();
+    return this.body.isEnabled();
   }
 
   public void setAsleep(boolean asleep) {
-    this.body.setAsleep(asleep);
+    this.body.setAtRest(asleep);
   }
 
   public boolean isAsleep() {
-    return this.body.isAsleep();
+    return this.body.isAtRest();
   }
 
   public void applyForce(float x, float y) {

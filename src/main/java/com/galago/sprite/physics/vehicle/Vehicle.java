@@ -33,16 +33,16 @@ public class Vehicle {
   protected void initVehicle() {
     frontWheelJoint = new WheelJoint(vehicleBodyControl.getBody(), frontWheelControl.getBody(), frontWheelControl.getBody().getWorldCenter(), new Vector2(0.0, 1.0));
     frontWheelJoint.setCollisionAllowed(false);
-    frontWheelJoint.setFrequency(8.0); // setup a spring
-    frontWheelJoint.setDampingRatio(0.4);
+    frontWheelJoint.setSpringFrequency(8.0); // setup a spring
+    frontWheelJoint.setSpringDampingRatio(0.4);
     frontWheelJoint.setMotorEnabled(allWheelDrive); // give the car rear-wheel-drive
     frontWheelJoint.setMotorSpeed(0); // set the speed to -180 degrees per second
     frontWheelJoint.setMaximumMotorTorque(50); // don't forget to set the maximum torque
 
     rearWheelJoint = new WheelJoint(vehicleBodyControl.getBody(), rearWheelControl.getBody(), rearWheelControl.getBody().getWorldCenter(), new Vector2(0.0, 1.0));
     rearWheelJoint.setCollisionAllowed(false);
-    rearWheelJoint.setFrequency(8.0); // setup a spring
-    rearWheelJoint.setDampingRatio(0.4);
+    rearWheelJoint.setSpringFrequency(8.0); // setup a spring
+    rearWheelJoint.setSpringDampingRatio(0.4);
     rearWheelJoint.setMotorEnabled(true); // give the car rear-wheel-drive
     rearWheelJoint.setMotorSpeed(0); // set the speed to -180 degrees per second
     rearWheelJoint.setMaximumMotorTorque(50); // don't forget to set the maximum torque

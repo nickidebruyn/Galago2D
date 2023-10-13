@@ -5,6 +5,7 @@ import com.jme3.math.Vector3f;
 import org.dyn4j.geometry.Convex;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author nickidebruyn
@@ -18,6 +19,13 @@ public abstract class CollisionShape implements Savable {
 
   public CollisionShape() {
   }
+
+  protected void initShape() {
+    createShape();
+    cShape.setUserData(UUID.randomUUID().toString());
+  }
+
+  protected abstract void createShape();
 
   /**
    * used internally

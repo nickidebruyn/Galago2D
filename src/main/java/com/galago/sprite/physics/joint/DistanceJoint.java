@@ -26,26 +26,30 @@ public class DistanceJoint extends PhysicsJoint {
   }
 
   public void setDampingRatio(float ratio) {
-    ((org.dyn4j.dynamics.joint.DistanceJoint) joint).setDampingRatio(ratio);
+    ((org.dyn4j.dynamics.joint.DistanceJoint) joint).setSpringDampingRatio(ratio);
   }
 
   public float getDampingRatio() {
-    return Converter.toFloat(((org.dyn4j.dynamics.joint.DistanceJoint) joint).getDampingRatio());
+    return Converter.toFloat(((org.dyn4j.dynamics.joint.DistanceJoint) joint).getSpringDampingRatio());
   }
 
   public void setDistance(float distance) {
-    ((org.dyn4j.dynamics.joint.DistanceJoint) joint).setDistance(distance);
+    ((org.dyn4j.dynamics.joint.DistanceJoint) joint).setRestDistance(distance);
   }
 
   public float getDistance() {
-    return Converter.toFloat(((org.dyn4j.dynamics.joint.DistanceJoint) joint).getDistance());
+    return Converter.toFloat(((org.dyn4j.dynamics.joint.DistanceJoint) joint).getRestDistance());
+  }
+
+  public float getCurrentDistance() {
+    return Converter.toFloat(((org.dyn4j.dynamics.joint.DistanceJoint) joint).getCurrentDistance());
   }
 
   public void setFrequency(float frequency) {
-    ((org.dyn4j.dynamics.joint.DistanceJoint) joint).setFrequency(frequency);
+    ((org.dyn4j.dynamics.joint.DistanceJoint) joint).setSpringFrequency(frequency);
   }
 
   public float getFrequency() {
-    return Converter.toFloat(((org.dyn4j.dynamics.joint.DistanceJoint) joint).getFrequency());
+    return Converter.toFloat(((org.dyn4j.dynamics.joint.DistanceJoint) joint).getSpringFrequency());
   }
 }

@@ -125,4 +125,11 @@ public class Camera2DState extends BaseAppState {
     this.maxClipping = maxClipping;
   }
 
+  public Vector3f getTargetPosition() {
+    return targetPosition;
+  }
+
+  public void setTargetPosition(Vector3f targetPosition) {
+    this.targetPosition = targetPosition;
+  }
 }

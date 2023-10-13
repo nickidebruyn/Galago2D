@@ -4,20 +4,19 @@ import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
-import org.dyn4j.geometry.Capsule;
+import org.dyn4j.geometry.HalfEllipse;
 
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * @author nickidebruyn
  */
-public class CapsuleCollisionShape extends CollisionShape {
+public class HalfEllipseCollisionShape extends CollisionShape {
 
   private float width;
   private float height;
 
-  public CapsuleCollisionShape() {
+  public HalfEllipseCollisionShape() {
     width = 10;
     height = 10;
   }
@@ -25,7 +24,7 @@ public class CapsuleCollisionShape extends CollisionShape {
   /**
    * creates a collision box from the given size
    */
-  public CapsuleCollisionShape(float width, float height) {
+  public HalfEllipseCollisionShape(float width, float height) {
     this.width = width;
     this.height = height;
     initShape();
@@ -55,7 +54,7 @@ public class CapsuleCollisionShape extends CollisionShape {
   }
 
   protected void createShape() {
-    cShape = new Capsule(width, height);
+    cShape = new HalfEllipse(width, height);
   }
 
 }

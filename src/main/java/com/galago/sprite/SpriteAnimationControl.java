@@ -2,6 +2,7 @@ package com.galago.sprite;
 
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
 import java.util.HashMap;
@@ -23,10 +24,28 @@ public class SpriteAnimationControl extends AbstractControl {
   private float animationFrameTime = 1f;
   private float elapsedeTime = 0f;
 
+  private boolean loop = true;
+
+  private AnimationCallback animationCallback;
+
   public SpriteAnimationControl(Sprite sprite) {
     this.sprite = sprite;
   }
 
+  public AnimationCallback getAnimationCallback() {
+    return animationCallback;
+  }
+
+  public void setAnimationCallback(AnimationCallback animationCallback) {
+    this.animationCallback = animationCallback;
+  }
+
+  protected void fireAnimationCallback(Spatial s) {
+    if (animationCallback != null) {
+      animationCallback.done(s);
+
+    }
+  }
 
   @Override
   protected void controlUpdate(float tpf) {
@@ -37,7 +56,13 @@ public class SpriteAnimationControl extends AbstractControl {
       if (elapsedeTime >= animationFrameTime) {
         currentIndex++;
         if (currentIndex >= currentAnimation.length) {
-          currentIndex = 0;
+          if (loop) {
+            currentIndex = 0;
+          } else {
+            currentIndex = currentAnimation.length-1;
+          }
+
+          fireAnimationCallback(getSpatial());
         }
         elapsedeTime = 0f;
         sprite.showIndex(currentAnimation[currentIndex]);
@@ -60,17 +85,38 @@ public class SpriteAnimationControl extends AbstractControl {
   }
 
   public void playAnimation(String name, float timePerFrame) {
+    playAnimation(name, timePerFrame, true);
+
+  }
+
+  public void playAnimation(String name, float timePerFrame, boolean looped) {
     int[] seq = animations.get(name);
 
     if (seq != null && !name.equals(currentAnimationName)) {
+      loop = looped;
       currentAnimationName = name;
       sprite.showIndex(seq[0]);
       currentAnimation = seq;
       animationFrameTime = timePerFrame;
-      currentIndex = seq[0];
+      currentIndex = 0;
       elapsedeTime = 0f;
     }
 
   }
 
+  public void stopAnimation() {
+    currentAnimation = null;
+  }
+
+  public Map<String, int[]> getAnimations() {
+    return animations;
+  }
+
+  public int[] getCurrentAnimation() {
+    return currentAnimation;
+  }
+
+  public String getCurrentAnimationName() {
+    return currentAnimationName;
+  }
 }

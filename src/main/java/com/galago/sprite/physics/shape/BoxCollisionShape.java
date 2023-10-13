@@ -5,6 +5,8 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
 import java.io.IOException;
+import java.util.UUID;
+
 import org.dyn4j.geometry.Rectangle;
 
 /**
@@ -27,7 +29,8 @@ public class BoxCollisionShape extends CollisionShape {
     public BoxCollisionShape(float width, float height) {
         this.width = width;
         this.height = height;
-        createShape();
+        initShape();
+
     }
 
     public float getWidth() {
@@ -50,7 +53,7 @@ public class BoxCollisionShape extends CollisionShape {
         InputCapsule capsule = im.getCapsule(this);
         this.width = capsule.readFloat("width", 10.0f);
         this.height = capsule.readFloat("height", 10.0f);
-        createShape();
+        initShape();
     }
 
     protected void createShape() {

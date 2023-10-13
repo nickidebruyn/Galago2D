@@ -5,10 +5,10 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.renderer.RenderManager;
 import org.dyn4j.collision.Bounds;
-import org.dyn4j.dynamics.Capacity;
 import org.dyn4j.dynamics.Settings;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -25,7 +25,9 @@ public class Dyn4jAppState extends AbstractAppState {
    */
   protected Application app = null;
   protected AppStateManager stateManager = null;
-  protected Capacity initialCapacity = null;
+  protected Integer initialCapacity;
+
+  protected Integer initialJointCapacity;
   protected Bounds bounds = null;
   protected PhysicsSpace physicsSpace = null;
   protected float tpf = 0;
@@ -33,49 +35,97 @@ public class Dyn4jAppState extends AbstractAppState {
   // MultiTreading Fields
   protected ThreadingType threadingType = null;
   protected ScheduledThreadPoolExecutor executor;
-  private final Runnable parallelPhysicsUpdate = new Runnable() {
-    @Override
-    public void run() {
-      if (!isEnabled()) {
-        return;
-      }
-
-      Dyn4jAppState.this.physicsSpace.updateFixed(Dyn4jAppState.this.tpfSum);
-      Dyn4jAppState.this.tpfSum = 0;
+  /**
+   * (non-javadoc)
+   */
+  private final Runnable parallelPhysicsUpdate = () -> {
+    if (!isEnabled()) {
+      return;
     }
+
+    Dyn4jAppState.this.physicsSpace.updateFixed(Dyn4jAppState.this.tpfSum);
+    Dyn4jAppState.this.tpfSum = 0;
   };
 
+  /**
+   * Instantiates a new <code>Dyn4jAppState</code> object with the default values
+   */
   public Dyn4jAppState() {
     this(null, null, ThreadingType.PARALLEL);
   }
 
+  /**
+   * Instantiates a new <code>Dyn4jAppState</code> object with the default values but specified bounds
+   *
+   * @param bounds The limit of the world.
+   */
   public Dyn4jAppState(final Bounds bounds) {
-    this(null, bounds, ThreadingType.PARALLEL);
+    this(null, null, bounds, ThreadingType.PARALLEL);
   }
 
-  public Dyn4jAppState(final Capacity initialCapacity) {
-    this(initialCapacity, null, ThreadingType.PARALLEL);
+  /**
+   * Instantiates a new <code>Dyn4jAppState</code> object with the default values but specified capacities
+   *
+   * @param initialCapacity      initial capacity (bodies in the world).
+   * @param initialJointCapacity initial capacity of the joints.
+   */
+  public Dyn4jAppState(final Integer initialCapacity, final Integer initialJointCapacity) {
+    this(initialCapacity, initialJointCapacity, null, ThreadingType.PARALLEL);
   }
 
-  public Dyn4jAppState(final Capacity initialCapacity, final Bounds bounds) {
-    this(initialCapacity, bounds, ThreadingType.PARALLEL);
+  /**
+   * Instantiates a new <code>Dyn4jAppState</code> object with the specified capacities and bounds
+   *
+   * @param initialCapacity      initial capacity (bodies in the world).
+   * @param initialJointCapacity initial capacity of the joints.
+   * @param bounds               The limit of the world.
+   */
+  public Dyn4jAppState(final Integer initialCapacity, final Integer initialJointCapacity, final Bounds bounds) {
+    this(initialCapacity, initialJointCapacity, bounds, ThreadingType.PARALLEL);
   }
 
+  /**
+   * Instantiate a new <code>Dyn4jAppState</code> object and initialize it with the default values.
+   *
+   * @param threadingType ThreadingType
+   */
   public Dyn4jAppState(final ThreadingType threadingType) {
     this(null, null, threadingType);
   }
 
+  /**
+   * Instantiate a new <code>Dyn4jAppState</code> object and initialize it with the default values.
+   *
+   * @param bounds        The limit of the world.
+   * @param threadingType ThreadingType
+   */
   public Dyn4jAppState(final Bounds bounds, final ThreadingType threadingType) {
-    this(null, bounds, threadingType);
+    this(null, null, bounds, threadingType);
   }
 
-  public Dyn4jAppState(final Capacity initialCapacity, final ThreadingType threadingType) {
-    this(initialCapacity, null, threadingType);
+  /**
+   * Instantiate a new <code>Dyn4jAppState</code> object and initialize it with the default values.
+   *
+   * @param initialCapacity      initial capacity (bodies in the world).
+   * @param initialJointCapacity initial capacity of the joints.
+   * @param threadingType        ThreadingType
+   */
+  public Dyn4jAppState(final Integer initialCapacity, final Integer initialJointCapacity, final ThreadingType threadingType) {
+    this(initialCapacity, initialJointCapacity, null, threadingType);
   }
 
-  public Dyn4jAppState(final Capacity initialCapacity, final Bounds bounds, final ThreadingType threadingType) {
+  /**
+   * Instantiate a new <code>Dyn4jAppState</code> object and initialize it with the values specified.
+   *
+   * @param initialCapacity      initial capacity (bodies in the world).
+   * @param initialJointCapacity initial capacity of the joints.
+   * @param bounds               The limit of the world.
+   * @param threadingType        ThreadingType
+   */
+  public Dyn4jAppState(final Integer initialCapacity, final Integer initialJointCapacity, final Bounds bounds, final ThreadingType threadingType) {
     this.threadingType = threadingType;
     this.initialCapacity = initialCapacity;
+    this.initialJointCapacity = initialJointCapacity;
     this.bounds = bounds;
   }
 
@@ -98,30 +148,30 @@ public class Dyn4jAppState extends AbstractAppState {
     if (this.threadingType == ThreadingType.PARALLEL) {
       startPhysicsOnExecutor();
     } else {
-      this.physicsSpace = new PhysicsSpace(this.initialCapacity, this.bounds);
+      this.physicsSpace = new PhysicsSpace(initialCapacity, initialJointCapacity, bounds);
     }
 
     this.initialized = true;
   }
 
+  /**
+   * Initializes the physics so that it runs in parallel with the engine
+   */
   private void startPhysicsOnExecutor() {
     if (this.executor != null) {
       this.executor.shutdown();
     }
     this.executor = new ScheduledThreadPoolExecutor(1);
 
-    final Callable<Boolean> call = new Callable<Boolean>() {
-      @Override
-      public Boolean call() throws Exception {
-        Dyn4jAppState.this.physicsSpace = new PhysicsSpace(Dyn4jAppState.this.initialCapacity,
-                Dyn4jAppState.this.bounds);
-        return true;
-      }
+    final Callable<Boolean> call = () -> {
+      Dyn4jAppState.this.physicsSpace = new PhysicsSpace(Dyn4jAppState.this.initialCapacity, Dyn4jAppState.this.initialJointCapacity,
+              Dyn4jAppState.this.bounds);
+      return true;
     };
 
     try {
       this.executor.submit(call).get();
-    } catch (final Exception ex) {
+    } catch (final InterruptedException | ExecutionException ex) {
       Logger.getLogger(Dyn4jAppState.class.getName()).log(Level.SEVERE, null, ex);
     }
 

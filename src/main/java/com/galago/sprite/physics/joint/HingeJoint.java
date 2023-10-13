@@ -35,7 +35,7 @@ public class HingeJoint extends PhysicsJoint {
   }
 
   public void setLimitsEnabled(boolean enable) {
-    ((org.dyn4j.dynamics.joint.RevoluteJoint) joint).setLimitEnabled(enable);
+    ((org.dyn4j.dynamics.joint.RevoluteJoint) joint).setLimitsEnabled(enable);
   }
 
   public void setMotorEnabled(boolean enable) {

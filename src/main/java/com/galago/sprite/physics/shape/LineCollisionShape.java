@@ -33,7 +33,7 @@ public class LineCollisionShape extends CollisionShape {
     this.end = end;
     this.lineWidth = lineWidth;
 
-    createShape();
+    initShape();
   }
 
   public Vector2f getStart() {
@@ -59,7 +59,7 @@ public class LineCollisionShape extends CollisionShape {
     super.read(im);
     InputCapsule capsule = im.getCapsule(this);
 
-    createShape();
+    initShape();
   }
 
   private void log(String text) {

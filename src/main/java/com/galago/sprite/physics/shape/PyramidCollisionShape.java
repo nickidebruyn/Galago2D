@@ -28,7 +28,7 @@ public class PyramidCollisionShape extends CollisionShape {
   public PyramidCollisionShape(float width, float height) {
     this.width = width;
     this.height = height;
-    createShape();
+    initShape();
   }
 
   public float getWidth() {
@@ -51,7 +51,7 @@ public class PyramidCollisionShape extends CollisionShape {
     InputCapsule capsule = im.getCapsule(this);
     this.width = capsule.readFloat("width", 10.0f);
     this.height = capsule.readFloat("height", 10.0f);
-    createShape();
+    initShape();
   }
 
   protected void createShape() {

@@ -46,6 +46,19 @@ public class Sprite extends Mesh {
 
     }
 
+    public Sprite(float width, float height, int columns, int rows, int index) {
+
+        this.width = width;
+        this.height = height;
+        this.columns = columns;
+        this.rows = rows;
+        this.colPosition = index % columns;
+        this.rowPosition = index / columns;
+
+        initializeMesh();
+
+    }
+
     private void initializeMesh() {
         // Vertex positions in space
         Vector3f[] vertices = new Vector3f[4];

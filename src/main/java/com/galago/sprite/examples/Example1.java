@@ -15,6 +15,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.texture.Texture;
+import org.dyn4j.collision.AxisAlignedBounds;
 
 /**
  * This example will show you how to create simple sprites for the background,

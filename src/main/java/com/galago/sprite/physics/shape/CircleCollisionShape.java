@@ -7,6 +7,7 @@ import com.jme3.export.OutputCapsule;
 import org.dyn4j.geometry.Circle;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author nickidebruyn
@@ -24,7 +25,7 @@ public class CircleCollisionShape extends CollisionShape {
    */
   public CircleCollisionShape(float radius) {
     this.radius = radius;
-    createShape();
+    initShape();
   }
 
   public void write(JmeExporter ex) throws IOException {
@@ -37,7 +38,7 @@ public class CircleCollisionShape extends CollisionShape {
     super.read(im);
     InputCapsule capsule = im.getCapsule(this);
     this.radius = capsule.readFloat("radius", 5.0f);
-    createShape();
+    initShape();
   }
 
   protected void createShape() {
