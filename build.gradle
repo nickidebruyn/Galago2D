@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.galago.sprite'
-version '2.0.0'
+version '2.0.2'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8

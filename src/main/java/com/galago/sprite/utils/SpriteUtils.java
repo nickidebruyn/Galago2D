@@ -5,6 +5,7 @@ import com.jme3.asset.TextureKey;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
 
 public class SpriteUtils {
@@ -40,6 +41,7 @@ public class SpriteUtils {
 
   /**
    * Loads an unshaded texture
+   *
    * @param assetManager
    * @param file
    * @return
@@ -49,6 +51,22 @@ public class SpriteUtils {
     tex.setMagFilter(Texture.MagFilter.Nearest);
     tex.setWrap(Texture.WrapMode.Repeat);
     return tex;
+  }
+
+  public static Material addColor(AssetManager assetManager, Spatial spatial, ColorRGBA colorRGBA, boolean unshaded) {
+    Material material = null;
+    if (unshaded) {
+      material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+      material.setColor("Color", colorRGBA);
+    } else {
+      material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+      material.setBoolean("UseMaterialColors", true);
+      material.setColor("Ambient", colorRGBA);
+      material.setColor("Diffuse", colorRGBA);
+    }
+
+    spatial.setMaterial(material);
+    return material;
   }
 
 }

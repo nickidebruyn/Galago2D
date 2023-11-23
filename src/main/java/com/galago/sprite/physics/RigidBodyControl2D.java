@@ -710,6 +710,9 @@ public class RigidBodyControl2D extends AbstractControl implements PhysicsContro
     return bodyFixture;
   }
 
+  public CollisionShape getCollisionShape() {
+    return collisionShape;
+  }
 //    private void printBodyFixturesList(List<BodyFixture> list, String heading) {
 //        for (int i = 0; i < list.size(); i++) {
 //            BodyFixture bodyFixture1 = list.get(i);

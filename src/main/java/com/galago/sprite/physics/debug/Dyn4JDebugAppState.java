@@ -141,19 +141,10 @@ public class Dyn4JDebugAppState extends AbstractAppState {
     return null;
   }
 
-  private ColorRGBA getColor(Body body) {
-    if (body.getMass().getMass() == 0) {
-      return ColorRGBA.Green;
-    } else {
-      return ColorRGBA.Red;
-    }
-  }
-
   private Spatial createRectangleShape(Body body, Rectangle rectangle) {
     WireBox mesh = new WireBox((float) rectangle.getWidth() * 0.5f, (float) rectangle.getHeight() * 0.5f, 0.1f);
     Geometry g = new Geometry(rectangle.getUserData().toString(), mesh);
-    Material material = SpriteUtils.loadMaterial(app.getAssetManager(), getColor(body));
-    g.setMaterial(material);
+    Material material = SpriteUtils.addColor(app.getAssetManager(), g, ColorRGBA.Blue, true);
     g.setQueueBucket(RenderQueue.Bucket.Translucent);
     return g;
   }
@@ -175,9 +166,7 @@ public class Dyn4JDebugAppState extends AbstractAppState {
 
     WireSphere mesh = new WireSphere(radius);
     Geometry g = new Geometry(ellipse.getUserData().toString(), mesh);
-    Material material = SpriteUtils.loadMaterial(app.getAssetManager(), getColor(body));
-    material.getAdditionalRenderState().setLineWidth(2);
-    g.setMaterial(material);
+    Material material = SpriteUtils.addColor(app.getAssetManager(), g, ColorRGBA.Orange, true);
     g.setQueueBucket(RenderQueue.Bucket.Translucent);
     g.setLocalScale(scaleX, scaleY, 1);
     return g;
